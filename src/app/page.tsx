@@ -39,6 +39,13 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Safety check: Ensure they haven't submitted already (helps if they bypass the initial redirect)
+    if (localStorage.getItem('tm_entry_submitted')) {
+      router.push('/thank-you');
+      return;
+    }
+
     setLoading(true);
     setError(null);
 

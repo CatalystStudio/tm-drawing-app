@@ -57,7 +57,7 @@ export default function ThankYou() {
 
         <h1 className="text-3xl font-bold text-slate-900 mb-4">You're Entered!</h1>
         <p className="text-slate-600 mb-8">
-          Thank you for visiting TelcoMotion at the AHR Tradeshow. We'll contact you if you're selected as a winner!
+          Thank you for visiting TelcoMotion at AHR 2026. We'll contact you if you're selected as a winner!
         </p>
 
         <div className="space-y-4">
