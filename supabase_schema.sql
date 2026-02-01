@@ -1,5 +1,5 @@
--- Create the entrants table
-CREATE TABLE entrants (
+-- 1. Create the entrants table (if it doesn't exist)
+CREATE TABLE IF NOT EXISTS entrants (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ DEFAULT now(),
   name TEXT NOT NULL,
@@ -10,16 +10,15 @@ CREATE TABLE entrants (
   disqualified BOOLEAN DEFAULT false
 );
 
--- Enable RLS
+-- 2. Enable RLS
 ALTER TABLE entrants ENABLE ROW LEVEL SECURITY;
 
--- Create policy to allow public inserts (for the form)
-CREATE POLICY "Allow public insert" ON entrants
-FOR INSERT WITH CHECK (true);
+-- 3. Policy Setup (Safely recreate policies)
+DROP POLICY IF EXISTS "Allow public insert" ON entrants;
+CREATE POLICY "Allow public insert" ON entrants FOR INSERT WITH CHECK (true);
 
--- Create policy to allow admin to read and update (for the /winner page)
--- In a real app, you'd use service role or auth, but for this quick demo 
--- we can use a simpler approach or just allow all for now if it's a private URL.
--- FOR THE TRADESHOW: Use the Service Role Key in the app for admin actions.
-CREATE POLICY "Allow service role full access" ON entrants
-FOR ALL USING (true);
+DROP POLICY IF EXISTS "Allow public select" ON entrants;
+CREATE POLICY "Allow public select" ON entrants FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow public update" ON entrants;
+CREATE POLICY "Allow public update" ON entrants FOR UPDATE USING (true);

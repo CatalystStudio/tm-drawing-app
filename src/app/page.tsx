@@ -54,6 +54,11 @@ export default function Home() {
       created_at: new Date().toISOString(),
     };
 
+    console.log('TM DEBUG: Submitting entry to Supabase...', {
+      url: process.env.NEXT_PUBLIC_SUPABASE_URL || 'MISSING',
+      isPlaceholder: (process.env.NEXT_PUBLIC_SUPABASE_URL || '').includes('placeholder')
+    });
+
     try {
       if (navigator.onLine) {
         const { error: sbError } = await supabase
@@ -61,6 +66,7 @@ export default function Home() {
           .insert([entry]);
 
         if (sbError) {
+          console.error('TM DEBUG: Supabase error during insert:', sbError);
           if (sbError.code === '23505') {
             throw new Error('This email has already been entered.');
           }
